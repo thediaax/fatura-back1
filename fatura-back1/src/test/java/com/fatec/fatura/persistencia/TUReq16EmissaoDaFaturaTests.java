@@ -184,25 +184,24 @@ class TUReq16EmissaoDaFaturaTests {
 		}
 
 	}
-
+	@Test
 	void ct11_quando_valor_da_fatura_zerado_ou_negativo_msg_de_erro() {
 		try {
-			// dado que o valor informado da fatura é inválido (zerado ou negativo)
 			LocalDate dataVencimento = LocalDate.parse("02/10/2026", formatter);
 
 			// caso 1: valor zerado
-			fatura = new Fatura("39086360009", dataVencimento, "moveis planejados", "0.00");
+			fatura = new Fatura("39086360009", dataVencimento, "moveis planejados", "0");
 			logger.info(">>>>>> ct11 - deveria ter falhado com valor zerado");
 			fail("nao deveria permitir fatura com valor zerado");
 
 			// caso 2: valor negativo
-			fatura = new Fatura("39086360009", dataVencimento, "moveis planejados", "-100.00");
+			fatura = new Fatura("39086360009", dataVencimento, "moveis planejados", "-1");
 			logger.info(">>>>>> ct11 - deveria ter falhado com valor negativo");
 			fail("nao deveria permitir fatura com valor negativo");
 
 		} catch (Exception e) {
 			logger.info(">>>>>> ct11 - mensagem => " + e.getMessage());
-			assertEquals("Valor da fatura invalido", e.getMessage());
+			assertEquals("O valor da fatura deve ser maior que zero.", e.getMessage());
 		}
 	}
 }
